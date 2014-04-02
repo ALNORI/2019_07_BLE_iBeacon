@@ -49,7 +49,7 @@ int main(void)
     GapAdvertisingData   advData;
     GapAdvertisingData   scanResponse;
 
-    /* Define an iBeacon payload
+    /* Define an Beacon payload
        --------------------------------------------------------------
        128-Bit UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
        Major/Minor  = 0000 / 0000
@@ -60,7 +60,7 @@ int main(void)
     /* Make sure we get a clean start */
     nrf.reset();
 
-    /* iBeacon includes the FLAG and MSD fields */
+    /* Beacon includes the FLAG and MSD fields */
     advData.addFlags(GapAdvertisingData::BREDR_NOT_SUPPORTED);
     advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, iBeaconPayload, sizeof(iBeaconPayload));
 
