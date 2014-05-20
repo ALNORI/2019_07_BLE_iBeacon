@@ -45,7 +45,8 @@ int main(void)
     pc.printf("Initialising the nRF51822\n\r");
     nrf.init();
     
-    GapAdvertisingParams advParams ( GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED );
+    GapAdvertisingParams advParams (
+        GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED );
     GapAdvertisingData   advData;
     GapAdvertisingData   scanResponse;
 
@@ -62,15 +63,16 @@ int main(void)
 
     /* Beacon includes the FLAG and MSD fields */
     advData.addFlags(GapAdvertisingData::BREDR_NOT_SUPPORTED);
-    advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
+    advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
+                    beaconPayload,
+                    sizeof(beaconPayload));
 
     /* Start advertising! */
     nrf.getGap().setAdvertisingData(advData, scanResponse);
     nrf.getGap().startAdvertising(advParams);
 
     /* Do blinky on LED1 while we're waiting for BLE events */
-    for (;;)
-    {
+    for (;; ) {
       led1 = !led1;
       wait(1);
     }
