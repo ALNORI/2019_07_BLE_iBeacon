@@ -37,14 +37,14 @@ int main(void)
     *(uint32_t *)0x40006C18 = 0x00008000;
     
     /* Setup blinky: led1 is toggled in main, led2 is toggled via Ticker */
-    led1=1;
-    led2=1;
+    led1 = 1;
+    led2 = 1;
     flipper.attach(&tickerCallback, 1.0);
 
     /* Initialise the nRF51822 */
     pc.printf("Initialising the nRF51822\n\r");
     nrf.init();
-    
+
     GapAdvertisingParams advParams (
         GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED );
     GapAdvertisingData   advData;
@@ -73,8 +73,8 @@ int main(void)
 
     /* Do blinky on LED1 while we're waiting for BLE events */
     for (;; ) {
-      led1 = !led1;
-      wait(1);
+        led1 = !led1;
+        wait(1);
     }
 }
 
