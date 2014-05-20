@@ -50,18 +50,37 @@ int main(void)
     GapAdvertisingData   advData;
     GapAdvertisingData   scanResponse;
 
-    /* Define an Beacon payload
+    /*
+     * For this demo application, populate the beacon advertisement payload
+     * with 2 AD structures: FLAG and MSD
+     *
+     * Reference:
+     *  Bluetooth Core Specification 4.0 (Vol. 3), Part C, Section 11, 18
+     */
+
+    /* Define an Beacon payload.
+
+       This is the data part of the MSD AdvertisingData structure to be added to
+       the advertising payload.
        --------------------------------------------------------------
        128-Bit UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
        Major/Minor  = 0000 / 0000
        Tx Power     = C8
     */
-    uint8_t beaconPayload[25] = { 0x4C, 0x00, 0x02, 0x15, 0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4, 0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61, 0x00, 0x00, 0x00, 0x00, 0xC8 };
+    uint8_t beaconPayload[] = {
+        0x4C, 0x00, // Company identifier code (0x004C == Apple)
+        0x02,       // ID
+        0x15,       // length of the remaining payload
+        0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4, // UUID
+        0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61,
+        0x00, 0x00, // the major value to differenciate a location
+        0x00, 0x00, // the minor value to differenciate a location
+        0xC8        // 2's complement of the Tx power (-56dB)
+    };
 
     /* Make sure we get a clean start */
     nrf.reset();
 
-    /* Beacon includes the FLAG and MSD fields */
     advData.addFlags(GapAdvertisingData::BREDR_NOT_SUPPORTED);
     advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
                     beaconPayload,
