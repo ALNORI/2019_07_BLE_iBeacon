@@ -73,13 +73,13 @@ int main(void)
                         beaconPayload,
                         sizeof(beaconPayload));
         GapAdvertisingData scanResponse;
-        ble.getGap().setAdvertisingData(advData, scanResponse);
+        ble.setAdvertisingData(advData, scanResponse);
     }
 
     /* Start advertising! */
     GapAdvertisingParams advParams(
         GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    ble.getGap().startAdvertising(advParams);
+    ble.startAdvertising(advParams);
 
     /* Do blinky on mainloopLED while we're waiting for BLE events */
     for (;; ) {
