@@ -15,9 +15,9 @@
  */
 
 #include "mbed.h"
-#include "nRF51822n.h"
+#include "BLEDevice.h"
 
-nRF51822n  ble;                /* BLE radio driver */
+BLEDevice  ble;                /* BLE radio driver */
 
 DigitalOut mainloopLED(LED1);
 DigitalOut tickerLED(LED2);
