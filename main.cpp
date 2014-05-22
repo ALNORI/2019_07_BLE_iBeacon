@@ -93,11 +93,6 @@ void setupAppHardware(void)
     flipper.attach(&tickerCallback, 1.0);
 }
 
-/**************************************************************************/
-/*!
-    @brief  Ticker callback to switch tickerLED state
-*/
-/**************************************************************************/
 void tickerCallback(void)
 {
     tickerLED = !tickerLED;
