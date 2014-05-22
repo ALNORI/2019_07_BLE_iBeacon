@@ -32,11 +32,9 @@ Serial      pc(USBTX,USBRX);
  *  Bluetooth Core Specification 4.0 (Vol. 3), Part C, Section 11, 18
  */
 
-/* Define an Beacon payload.
- *
- * This is the data part of the MSD AdvertisingData structure to be added to
- * the advertising payload.
- * --------------------------------------------------------------
+/*
+ * The Beacon payload (within the MSD advertising data structure) has the
+ * following composition:
  * 128-Bit UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
  * Major/Minor  = 0000 / 0000
  * Tx Power     = C8
