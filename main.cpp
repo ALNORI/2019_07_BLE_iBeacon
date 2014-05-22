@@ -17,12 +17,12 @@
 #include "mbed.h"
 #include "nRF51822n.h"
 
-nRF51822n   ble;                /* BLE radio driver */
+nRF51822n  ble;                /* BLE radio driver */
 
-DigitalOut  mainloopLED(LED1);
-DigitalOut  tickerLED(LED2);
-Ticker      flipper;
-Serial      pc(USBTX,USBRX);
+DigitalOut mainloopLED(LED1);
+DigitalOut tickerLED(LED2);
+Ticker     flipper;
+Serial     pc(USBTX,USBRX);
 
 /*
  * For this demo application, populate the beacon advertisement payload
@@ -57,8 +57,7 @@ int main(void)
 {
     setupAppHardware();
 
-    /* Initialise the nRF51822 */
-    pc.printf("Initialising the nRF51822\n\r");
+    pc.printf("Initialising BTLE transport\n\r");
     ble.init();
     ble.reset();
 
