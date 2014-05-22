@@ -26,15 +26,15 @@ Serial      pc(USBTX,USBRX);
 
 /*
  * For this demo application, populate the beacon advertisement payload
- * with 2 AD structures: FLAG and MSD
+ * with 2 AD structures: FLAG and MSD (manufacturer specific data).
  *
  * Reference:
  *  Bluetooth Core Specification 4.0 (Vol. 3), Part C, Section 11, 18
  */
 
 /*
- * The Beacon payload (within the MSD advertising data structure) has the
- * following composition:
+ * The Beacon payload (encapsulated within the MSD advertising data structure)
+ * has the following composition:
  * 128-Bit UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
  * Major/Minor  = 0000 / 0000
  * Tx Power     = C8
@@ -63,7 +63,7 @@ int main(void)
     ble.reset();
 
     /* Setup advertising data. This includes AD structures in the payload of
-     * advertising packets; and scan-response data. */
+     * advertising packets. */
     {
         GapAdvertisingData advData;
         advData.addFlags(GapAdvertisingData::BREDR_NOT_SUPPORTED);
@@ -83,8 +83,6 @@ int main(void)
         mainloopLED = !mainloopLED;
         wait(1);
     }
-
-    /* unreachable. */
 }
 
 void setupAppHardware(void)
