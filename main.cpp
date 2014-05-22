@@ -19,8 +19,8 @@
 
 nRF51822n   nrf;                /* BLE radio driver */
 
-DigitalOut  led1(LED1);
-DigitalOut  led2(LED2);
+DigitalOut  mainloopLED(LED1);
+DigitalOut  tickerLED(LED2);
 Ticker      flipper;
 Serial      pc(USBTX,USBRX);
 
@@ -33,9 +33,9 @@ void tickerCallback(void);
 /**************************************************************************/
 int main(void)
 {
-    /* Setup blinky: led1 is toggled in main, led2 is toggled via Ticker */
-    led1 = 1;
-    led2 = 1;
+    /* Setup blinky: mainloopLED is toggled in main, tickerLED is toggled via Ticker */
+    mainloopLED = 1;
+    tickerLED   = 1;
     flipper.attach(&tickerCallback, 1.0);
 
     /* Initialise the nRF51822 */
@@ -87,19 +87,19 @@ int main(void)
     nrf.getGap().setAdvertisingData(advData, scanResponse);
     nrf.getGap().startAdvertising(advParams);
 
-    /* Do blinky on LED1 while we're waiting for BLE events */
+    /* Do blinky on mainloopLED while we're waiting for BLE events */
     for (;; ) {
-        led1 = !led1;
+        mainloopLED = !mainloopLED;
         wait(1);
     }
 }
 
 /**************************************************************************/
 /*!
-    @brief  Ticker callback to switch led2 state
+    @brief  Ticker callback to switch tickerLED state
 */
 /**************************************************************************/
 void tickerCallback(void)
 {
-    led2 = !led2;
+    tickerLED = !tickerLED;
 }
