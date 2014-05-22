@@ -17,7 +17,7 @@
 #include "mbed.h"
 #include "nRF51822n.h"
 
-nRF51822n   nrf;                /* BLE radio driver */
+nRF51822n   ble;                /* BLE radio driver */
 
 DigitalOut  mainloopLED(LED1);
 DigitalOut  tickerLED(LED2);
@@ -61,8 +61,8 @@ int main(void)
 
     /* Initialise the nRF51822 */
     pc.printf("Initialising the nRF51822\n\r");
-    nrf.init();
-    nrf.reset();
+    ble.init();
+    ble.reset();
 
     /* Setup advertising data. This includes AD structures in the payload of
      * advertising packets; and scan-response data. */
@@ -73,13 +73,13 @@ int main(void)
                         beaconPayload,
                         sizeof(beaconPayload));
         GapAdvertisingData scanResponse;
-        nrf.getGap().setAdvertisingData(advData, scanResponse);
+        ble.getGap().setAdvertisingData(advData, scanResponse);
     }
 
     /* Start advertising! */
     GapAdvertisingParams advParams(
         GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    nrf.getGap().startAdvertising(advParams);
+    ble.getGap().startAdvertising(advParams);
 
     /* Do blinky on mainloopLED while we're waiting for BLE events */
     for (;; ) {
