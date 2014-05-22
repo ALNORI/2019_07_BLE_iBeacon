@@ -72,8 +72,7 @@ int main(void)
         advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
                         beaconPayload,
                         sizeof(beaconPayload));
-        GapAdvertisingData scanResponse;
-        ble.setAdvertisingData(advData, scanResponse);
+        ble.setAdvertisingData(advData);
     }
 
     /* Start advertising! */
