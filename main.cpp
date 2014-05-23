@@ -61,18 +61,14 @@ int main(void)
     ble.init();
     ble.reset();
 
-    /* Setup advertising data. This includes AD structures in the payload of
-     * advertising packets. */
-    {
-        GapAdvertisingData advData;
-        advData.addFlags(GapAdvertisingData::BREDR_NOT_SUPPORTED);
-        advData.addData(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
-                        beaconPayload,
-                        sizeof(beaconPayload));
-        ble.setAdvertisingData(advData);
-    }
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
+                                     beaconPayload,
+                                     sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
+    ble.setAdvertisingTimeout(0);    /* disable timeout. */
+    ble.setAdvertisingInterval(160); /* 100ms; in multiples of 0.625ms. */
     ble.startAdvertising();
 
     /* Do blinky on mainloopLED while we're waiting for BLE events */
