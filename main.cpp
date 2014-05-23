@@ -72,10 +72,8 @@ int main(void)
         ble.setAdvertisingData(advData);
     }
 
-    /* Start advertising! */
-    GapAdvertisingParams advParams(
-        GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    ble.startAdvertising(advParams);
+    ble.setAdvertisingParams(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
+    ble.startAdvertising();
 
     /* Do blinky on mainloopLED while we're waiting for BLE events */
     for (;; ) {
