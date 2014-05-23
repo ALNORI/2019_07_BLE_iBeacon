@@ -39,7 +39,7 @@ Serial     pc(USBTX,USBRX);
  * Major/Minor  = 0000 / 0000
  * Tx Power     = C8
  */
-uint8_t beaconPayload[] = {
+const static uint8_t beaconPayload[] = {
     0x4C, 0x00, // Company identifier code (0x004C == Apple)
     0x02,       // ID
     0x15,       // length of the remaining payload
