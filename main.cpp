@@ -50,8 +50,19 @@ const static uint8_t beaconPayload[] = {
     0xC8        // 2's complement of the Tx power (-56dB)
 };
 
-static void setupAppHardware(void);
-static void tickerCallback(void);
+void tickerCallback(void)
+{
+    tickerLED = !tickerLED;
+}
+
+void setupAppHardware(void)
+{
+    /* Setup blinkies: mainloopLED is toggled in main, tickerLED is
+     * toggled via Ticker */
+    mainloopLED = 1;
+    tickerLED   = 1;
+    flipper.attach(&tickerCallback, 1.0);
+}
 
 int main(void)
 {
@@ -76,18 +87,4 @@ int main(void)
         mainloopLED = !mainloopLED;
         wait(1);
     }
-}
-
-void setupAppHardware(void)
-{
-    /* Setup blinkies: mainloopLED is toggled in main, tickerLED is
-     * toggled via Ticker */
-    mainloopLED = 1;
-    tickerLED   = 1;
-    flipper.attach(&tickerCallback, 1.0);
-}
-
-void tickerCallback(void)
-{
-    tickerLED = !tickerLED;
 }
