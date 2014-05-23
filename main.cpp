@@ -76,7 +76,7 @@ int main(void)
     ble.startAdvertising();
 
     /* Do blinky on mainloopLED while we're waiting for BLE events */
-    for (;; ) {
+    for (;;) {
         mainloopLED = !mainloopLED;
         wait(1);
     }
