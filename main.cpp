@@ -70,7 +70,6 @@ int main(void)
 
     pc.printf("Initialising BTLE transport\n\r");
     ble.init();
-    ble.reset();
 
     ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
