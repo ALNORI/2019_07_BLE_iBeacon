@@ -15,9 +15,9 @@
  */
 
 #include "mbed.h"
-#include "BLEPeripheral.h"
+#include "BLEDevice.h"
 
-BLEPeripheral ble;
+BLEDevice ble;
 
 #define NEED_CONSOLE_OUTPUT 0 /* Set this if you need debug messages on the console;
                                * it will have an impact on code-size and power consumption. */
