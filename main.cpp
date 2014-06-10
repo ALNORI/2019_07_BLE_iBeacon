@@ -17,10 +17,17 @@
 #include "mbed.h"
 #include "BLEPeripheral.h"
 
-BLEPeripheral ble;                /* BLE radio driver */
+BLEPeripheral ble;
 
-DigitalOut mainloopLED(LED1);
-Serial     pc(USBTX,USBRX);
+#define NEED_CONSOLE_OUTPUT 0 /* Set this if you need debug messages on the console;
+                               * it will have an impact on code-size and power consumption. */
+
+#if NEED_CONSOLE_OUTPUT
+Serial  pc(USBTX, USBRX);
+#define DEBUG(...) { pc.printf(__VA_ARGS__); }
+#else
+#define DEBUG(...) /* nothing */
+#endif /* #if NEED_CONSOLE_OUTPUT */
 
 /*
  * For this demo application, populate the beacon advertisement payload
@@ -41,38 +48,34 @@ const static uint8_t beaconPayload[] = {
     0x4C, 0x00, // Company identifier code (0x004C == Apple)
     0x02,       // ID
     0x15,       // length of the remaining payload
-    0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4, // UUID
+    0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4, // location UUID
     0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61,
-    0x00, 0x00, // the major value to differenciate a location
-    0x00, 0x00, // the minor value to differenciate a location
+    0x00, 0x00, // the major value to differentiate a location
+    0x00, 0x00, // the minor value to differentiate a location
     0xC8        // 2's complement of the Tx power (-56dB)
 };
 
-void setupAppHardware(void)
-{
-    /* Setup blinkies: mainloopLED is toggled in main, tickerLED is
-     * toggled via Ticker */
-    mainloopLED = 1;
-}
-
 int main(void)
 {
-    setupAppHardware();
-
-    pc.printf("Initialising BTLE transport\n\r");
+    DEBUG("Initialising BTLE transport\n\r");
     ble.init();
 
     ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    ble.setAdvertisingTimeout(0);    /* disable timeout. */
     ble.setAdvertisingInterval(160); /* 100ms; in multiples of 0.625ms. */
     ble.startAdvertising();
 
-    /* Do blinky on mainloopLED while we're waiting for BLE events */
     for (;;) {
-        mainloopLED = !mainloopLED;
-        wait(1);
+        ble.waitForEvent();
     }
+
+    // An alternative to the above:
+    //
+    // DigitalOut mainloopLED(LED1);
+    // for (;;) {
+    //     mainloopLED = !mainloopLED;
+    //     wait(1);
+    // }
 }
