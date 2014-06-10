@@ -15,13 +15,11 @@
  */
 
 #include "mbed.h"
-#include "BLEDevice.h"
+#include "BLEPeripheral.h"
 
-BLEDevice  ble;                /* BLE radio driver */
+BLEPeripheral ble;                /* BLE radio driver */
 
 DigitalOut mainloopLED(LED1);
-DigitalOut tickerLED(LED2);
-Ticker     flipper;
 Serial     pc(USBTX,USBRX);
 
 /*
@@ -50,18 +48,11 @@ const static uint8_t beaconPayload[] = {
     0xC8        // 2's complement of the Tx power (-56dB)
 };
 
-void tickerCallback(void)
-{
-    tickerLED = !tickerLED;
-}
-
 void setupAppHardware(void)
 {
     /* Setup blinkies: mainloopLED is toggled in main, tickerLED is
      * toggled via Ticker */
     mainloopLED = 1;
-    tickerLED   = 1;
-    flipper.attach(&tickerCallback, 1.0);
 }
 
 int main(void)
@@ -72,9 +63,7 @@ int main(void)
     ble.init();
 
     ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
-                                     beaconPayload,
-                                     sizeof(beaconPayload));
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingTimeout(0);    /* disable timeout. */
