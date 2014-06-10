@@ -15,9 +15,9 @@
  */
 
 #include "mbed.h"
-#include "BLEDevice.h"
+#include "BLEPeripheral.h"
 
-BLEDevice  ble;                /* BLE radio driver */
+BLEPeripheral ble;                /* BLE radio driver */
 
 DigitalOut mainloopLED(LED1);
 DigitalOut tickerLED(LED2);
@@ -72,9 +72,7 @@ int main(void)
     ble.init();
 
     ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA,
-                                     beaconPayload,
-                                     sizeof(beaconPayload));
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingTimeout(0);    /* disable timeout. */
