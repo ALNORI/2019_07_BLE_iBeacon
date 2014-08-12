@@ -76,6 +76,6 @@ int main(void)
     // DigitalOut mainloopLED(LED1);
     // for (;;) {
     //     mainloopLED = !mainloopLED;
-    //     wait(1);
+    //     ble.waitForEvent();
     // }
 }
