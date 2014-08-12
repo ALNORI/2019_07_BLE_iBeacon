@@ -44,7 +44,7 @@ Serial  pc(USBTX, USBRX);
  * Major/Minor  = 0000 / 0000
  * Tx Power     = C8
  */
-const static uint8_t beaconPayload[] = {
+const uint8_t beaconPayload[] = {
     0x4C, 0x00, // Company identifier code (0x004C == Apple)
     0x02,       // ID
     0x15,       // length of the remaining payload
@@ -60,11 +60,11 @@ int main(void)
     DEBUG("Initialising BTLE transport\n\r");
     ble.init();
 
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED | GapAdvertisingData::LE_GENERAL_DISCOVERABLE);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    ble.setAdvertisingInterval(160); /* 100ms; in multiples of 0.625ms. */
+    ble.setAdvertisingInterval(1600); /* 1s; in multiples of 0.625ms. */
     ble.startAdvertising();
 
     for (;;) {
