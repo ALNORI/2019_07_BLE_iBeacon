@@ -19,16 +19,6 @@
 
 BLEDevice ble;
 
-#define NEED_CONSOLE_OUTPUT 0 /* Set this if you need debug messages on the console;
-                               * it will have an impact on code-size and power consumption. */
-
-#if NEED_CONSOLE_OUTPUT
-Serial  pc(USBTX, USBRX);
-#define DEBUG(...) { pc.printf(__VA_ARGS__); }
-#else
-#define DEBUG(...) /* nothing */
-#endif /* #if NEED_CONSOLE_OUTPUT */
-
 /*
  * For this demo application, populate the beacon advertisement payload
  * with 2 AD structures: FLAG and MSD (manufacturer specific data).
@@ -52,30 +42,21 @@ const uint8_t beaconPayload[] = {
     0x89, 0x9a, 0xab, 0xbc, 0xcd, 0xde, 0xef, 0xf0,
     0x00, 0x00,
     0x00, 0x00,
-    0xC7
+    0xC8
 };
 
 int main(void)
 {
-    DEBUG("Initialising BTLE transport\n\r");
     ble.init();
 
     ble.accumulateAdvertisingPayload(GapAdvertisingData::BREDR_NOT_SUPPORTED | GapAdvertisingData::LE_GENERAL_DISCOVERABLE);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::MANUFACTURER_SPECIFIC_DATA, beaconPayload, sizeof(beaconPayload));
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_NON_CONNECTABLE_UNDIRECTED);
-    ble.setAdvertisingInterval(1600); /* 1s; in multiples of 0.625ms. */
+    ble.setAdvertisingInterval(Gap::MSEC_TO_ADVERTISEMENT_DURATION_UNITS(1000));
     ble.startAdvertising();
 
     for (;;) {
         ble.waitForEvent();
     }
-
-    // An alternative to the above:
-    //
-    // DigitalOut mainloopLED(LED1);
-    // for (;;) {
-    //     mainloopLED = !mainloopLED;
-    //     ble.waitForEvent();
-    // }
 }
