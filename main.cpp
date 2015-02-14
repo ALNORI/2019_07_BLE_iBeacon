@@ -15,24 +15,47 @@
  */
 
 #include "mbed.h"
-#include "BLEDevice.h"
 #include "iBeaconService.h"
+
+/**
+ * For this demo application, populate the beacon advertisement payload
+ * with 2 AD structures: FLAG and MSD (manufacturer specific data).
+ *
+ * Reference:
+ *  Bluetooth Core Specification 4.0 (Vol. 3), Part C, Section 11, 18
+ */
 
 BLEDevice ble;
 
+/**
+ * The Beacon payload has the following composition:
+ * 128-Bit / 16byte UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
+ * Major/Minor  = 0x1122 / 0x3344
+ * Tx Power     = 0xC8 = 200, 2's compliment is 256-200 = (-56dB)
+ *
+ * Note: please remember to calibrate your beacons
+ * TX Power for more accurate results.
+ */
+uint8_t uuid[] = {0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4,
+                  0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61
+                 };
+uint16_t majorNumber = 1122;
+uint16_t minorNumber = 3344;
+uint16_t txPower = 0xC8;
+
 int main(void)
 {
+    // Initialize BLE baselayer
     ble.init();
 
-    const uint8_t uuid[] = {0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4,
-                            0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61};
-    iBeaconService ibeacon(ble, uuid, 0x1122 /* majorNumber */, 0x3344 /* minorNumber */, 0xC8 /* 2's complement of the Tx power (-56dB) */);
+    // Initialize ibeacon
+    iBeaconService ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
     // Set advertising time
     ble.setAdvertisingInterval(160); /* 100ms; in multiples of 0.625ms. */
     ble.startAdvertising();
 
-    for (;;) {
-        ble.waitForEvent();
+    while(1) {
+        ble.waitForEvent(); // allows or low power operation
     }
 }
