@@ -45,13 +45,10 @@ uint16_t txPower = 0xC8;
 
 int main(void)
 {
-    // Initialize BLE baselayer
     ble.init();
 
-    // Initialize ibeacon
     iBeaconService ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
-    // Set advertising time
     ble.setAdvertisingInterval(Gap::MSEC_TO_ADVERTISEMENT_DURATION_UNITS(100)); /* 100ms. */
     ble.startAdvertising();
 
