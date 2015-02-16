@@ -36,9 +36,9 @@ BLEDevice ble;
  * Note: please remember to calibrate your beacons
  * TX Power for more accurate results.
  */
-uint8_t uuid[] = {0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4,
-                  0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61
-                 };
+const uint8_t uuid[] = {0xE2, 0x0A, 0x39, 0xF4, 0x73, 0xF5, 0x4B, 0xC4,
+                        0xA1, 0x2F, 0x17, 0xD1, 0xAD, 0x07, 0xA9, 0x61
+                       };
 uint16_t majorNumber = 1122;
 uint16_t minorNumber = 3344;
 uint16_t txPower = 0xC8;
@@ -52,7 +52,7 @@ int main(void)
     iBeaconService ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
     // Set advertising time
-    ble.setAdvertisingInterval(160); /* 100ms; in multiples of 0.625ms. */
+    ble.setAdvertisingInterval(Gap::MSEC_TO_ADVERTISEMENT_DURATION_UNITS(100)); /* 100ms. */
     ble.startAdvertising();
 
     while(1) {
