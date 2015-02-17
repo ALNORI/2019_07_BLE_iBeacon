@@ -49,7 +49,7 @@ int main(void)
 
     iBeaconService ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
-    ble.setAdvertisingInterval(Gap::MSEC_TO_ADVERTISEMENT_DURATION_UNITS(100)); /* 100ms. */
+    ble.setAdvertisingInterval(Gap::MSEC_TO_ADVERTISEMENT_DURATION_UNITS(1000)); /* 1000ms. */
     ble.startAdvertising();
 
     while(1) {
