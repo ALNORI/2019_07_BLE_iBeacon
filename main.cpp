@@ -25,7 +25,7 @@
  *  Bluetooth Core Specification 4.0 (Vol. 3), Part C, Section 11, 18
  */
 
-BLEDevice ble;
+BLE ble;
 
 /**
  * The Beacon payload has the following composition:
@@ -49,8 +49,8 @@ int main(void)
 
     iBeaconService ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
-    ble.setAdvertisingInterval(1000); /* 1000ms. */
-    ble.startAdvertising();
+    ble.gap().setAdvertisingInterval(1000); /* 1000ms. */
+    ble.gap().startAdvertising();
 
     while(1) {
         ble.waitForEvent(); // allows or low power operation
