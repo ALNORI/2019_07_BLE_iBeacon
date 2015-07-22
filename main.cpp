@@ -41,7 +41,7 @@ int main(void)
     ble.gap().setAdvertisingInterval(1000); /* 1000ms. */
     ble.gap().startAdvertising();
 
-    while(1) {
+    while (true) {
         ble.waitForEvent(); // allows or low power operation
     }
 }
