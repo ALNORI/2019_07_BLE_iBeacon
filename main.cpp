@@ -18,11 +18,16 @@
 #include "ble/services/iBeacon.h"
 
 BLE ble;
-
-int main(void)
+    
+void bleInitComplete(BLE::InitializationCompleteCallbackContext *params)
 {
-    ble.init();
+    BLE &ble          = params->ble;
+    ble_error_t error = params->error;
 
+    if (error != BLE_ERROR_NONE) {
+        return;
+    }
+    
     /**
      * The Beacon payload has the following composition:
      * 128-Bit / 16byte UUID = E2 0A 39 F4 73 F5 4B C4 A1 2F 17 D1 AD 07 A9 61
@@ -36,10 +41,15 @@ int main(void)
     uint16_t majorNumber = 1122;
     uint16_t minorNumber = 3344;
     uint16_t txPower     = 0xC8;
-    iBeacon ibeacon(ble, uuid, majorNumber, minorNumber, txPower);
+    iBeacon *ibeacon = new iBeacon(ble, uuid, majorNumber, minorNumber, txPower);
 
     ble.gap().setAdvertisingInterval(1000); /* 1000ms. */
     ble.gap().startAdvertising();
+}
+
+int main(void)
+{
+    ble.init(bleInitComplete);
 
     while (true) {
         ble.waitForEvent(); // allows or low power operation
