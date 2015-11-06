@@ -50,6 +50,10 @@ void bleInitComplete(BLE::InitializationCompleteCallbackContext *params)
 int main(void)
 {
     ble.init(bleInitComplete);
+    
+    /* SpinWait for initialization to complete. This is necessary because the
+     * BLE object is used in the main loop below. */
+    while (ble.hasInitialized()) { /* spin loop */ }
 
     while (true) {
         ble.waitForEvent(); // allows or low power operation
